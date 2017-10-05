@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "set.seed(42)\nm <- 2000\nknapsack_objects <-\n  data.frame(w = sample(1:4000, size = m, replace = TRUE),\n             v = runif(n = m, 0, 10000))\n\nlibrary(parallel)\n#' An implementation of the brute force solution to the knapsack problem\n#' Where we list all possible combinations of a vector with size \\{0,1\\}\\*n and then make it into\n#' a matrix and check each row for best possible value. The matrix has the size 2^n rows and n columns.\n#'\n#' @param x data.frame with two vectors of the same size, v with values and w with weights\n#' @param W an integer as the total weight of the knapsack\n#'\n#' @export\nbrute_force_knapsack <- function(x,W, parallel = FALSE) {\n  n <- length(x[[1]])\n  l <- rep(list(0:1), n)\n  M <- matrix(unlist(expand.grid(l)), ncol = n)\n  v <- x$v\n  w <- x$w\n  best <- replicate(n,0)\n\n  # Checks each row of M if the weight is allowed\n  if(parallel){\n    res_vec <- mclapply(1:2^n, function(x, best, M, w, v, W) {\n      m <- M[x,]\n      if(sum(w[m == 1]) <= W) {\n        return(m)\n      }\n    }, best, M, w, v, W, mc.cores = detectCores())\n    # To reduce overhead - might just use max() and return pairs ^ (m, v[m])\n    res_vec <- Filter(Negate(is.null), res_vec)\n    lapply(res_vec, function(m) {\n      if (sum(v[m == 1]) >= sum(v[best == 1])) {\n        best <<- m\n      }\n    })\n  } else {\n    apply(M, 1, function(m) {\n      if (sum(v[m == 1]) >= sum(v[best == 1]) & sum(w[m == 1]) <= W) {\n        best <<- m\n      }\n\n    })\n  }\n\n  res <- list(value=sum(v[best == 1]), elements=which(best == 1), resVec=best)\n  return(res)\n}\n\nptm <- proc.time()\nbrute_force_knapsack(x = knapsack_objects[1:25, ], W = 3500, parallel = TRUE)\nproc.time() - ptm\n\n\nptm <- proc.time()\nbrute_force_knapsack(x = knapsack_objects[1:20,], W = 3500, parallel = FALSE)\nproc.time() - ptm\n\n# We should return the path\nknapsack_dynamic <- function(x,W) {\n  n <- length(x[[1]])\n  m <- matrix(replicate(W*n,0), nrow=n, ncol=W)\n  v <- x$v\n  w <- x$w\n  for (j in 1:W) {\n    m[1,j] <- 0\n  }\n\n  for (i in 2:n) {\n    for (j in 1:W) {\n      if (w[i] > j) {\n        m[i,j] <- m[i-1,j]\n      } else {\n        m[i,j] <- max(m[i-1,j], m[i-1,j-w[i]] + v[i])\n      }\n    }\n  }\n\n  return(m[1:n,W])\n}\n\nknapsack_dynamic(x = knapsack_objects[1:8,], W = 3500)\n\ngreedy_knapsack <- function(x,W) {\n  n <- length(x[[1]])\n  v <- x$v\n  w <- x$w\n  best <- replicate(n,0)\n\n  # Sort vector o by v_i/w_i\n  ind_o <- order(v / w,decreasing=TRUE)\n\n  # Fill the return vector with as many o_1, o_2,..., o_n as possible\n  lapply(ind_o, function(i) {\n    if(sum(w[best > 0]) <= W){\n      best[i] <<- floor((W - w[i] - sum(w[best > 0])) / w[i])\n    }\n  })\n  res <- list(value=sum(v[best > 0]), elements=which(best > 0), bestval=best[best > 0])\n  return(res)\n}\n\ngreedy_knapsack(x = knapsack_objects[1:8,], W = 3500)\n",
+    "created" : 1506778594176.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4097518837",
+    "id" : "BA58A815",
+    "lastKnownWriteTime" : 1507128347,
+    "last_content_update" : 1507128347652,
+    "path" : "~/lab6/R/lab6.R",
+    "project_path" : "R/lab6.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
