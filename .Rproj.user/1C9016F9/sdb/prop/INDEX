@@ -1,3 +1,7 @@
 ~%2Flab6%2FDESCRIPTION="C616971C"
 ~%2Flab6%2FR%2Fhello.R="FC9D01D8"
 ~%2Flab6%2FR%2Flab6.R="E1B6F646"
+~%2Flab6%2Ftests%2Ftestthat%2Ftest_brute_force_knapsack.R="9E06B059"
+~%2Flab6%2Ftests%2Ftestthat%2Ftest_dynamic_knapsack.R="9144E34E"
+~%2Flab6%2Ftests%2Ftestthat%2Ftest_greedy_knapsack.R="BB2E2219"
+~%2Flab6%2Ftests%2Ftestthat%2Ftest_knapsack_dynamic.R="BC1C3096"

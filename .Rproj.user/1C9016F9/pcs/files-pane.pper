@@ -1,5 +1,5 @@
 {
-    "path" : "~/lab6",
+    "path" : "~/lab6/tests/testthat",
     "sortOrder" : [
         {
             "ascending" : true,

@@ -6,7 +6,7 @@
 Where we list all possible combinations of a vector with size \{0,1\}\*n and then make it into
 a matrix and check each row for best possible value. The matrix has the size 2^n rows and n columns.}
 \usage{
-brute_force_knapsack(x, W)
+brute_force_knapsack(x, W, parallel = FALSE)
 }
 \arguments{
 \item{x}{data.frame with two vectors of the same size, v with values and w with weights}

@@ -1,12 +1,15 @@
 Package: lab6
 Type: Package
-Title: What the Package Does (Title Case)
+Title: LAB6 different knapsack solutions
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Author: Simon Jonsson, Fanny Karelius
+Maintainer: Simon Jonsson <simjo241@liu.se>, Fanny Karelius <fanka309@liu.se>
+Description: Three different implementations of solving the knapsack problem
+             Dynamic, brute force and greedy
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
+Depends: R (>= 2.1.0), parallel
+Suggests: testthat, knitr, rmarkdown
+VignetteBuilder: knitr
