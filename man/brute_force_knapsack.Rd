@@ -12,6 +12,8 @@ brute_force_knapsack(x, W, parallel = FALSE)
 \item{x}{data.frame with two vectors of the same size, v with values and w with weights}
 
 \item{W}{an integer as the total weight of the knapsack}
+
+\item{parallel}{boolean deciding if computation should be done in parallel or concurrent}
 }
 \description{
 An implementation of the brute force solution to the knapsack problem

@@ -7,7 +7,6 @@
 #' @docType package
 NULL
 
-library(lineprof)
 set.seed(42)
 m <- 2000
 knapsack_objects <-
@@ -21,6 +20,7 @@ knapsack_objects <-
 #'
 #' @param x data.frame with two vectors of the same size, v with values and w with weights
 #' @param W an integer as the total weight of the knapsack
+#' @param parallel boolean deciding if computation should be done in parallel or concurrent
 #'
 #' @export
 brute_force_knapsack <- function(x, W, parallel = FALSE) {
@@ -29,6 +29,7 @@ brute_force_knapsack <- function(x, W, parallel = FALSE) {
               is.vector(x$v) &
               is.vector(x$w) &
               length(x$w) == length(x$v))
+  library(parallel)
   n <- length(x[[1]])
   l <- rep(list(0:1), n)
   # generates all permutations(2^n) of the n length 0,1 vector
@@ -39,7 +40,7 @@ brute_force_knapsack <- function(x, W, parallel = FALSE) {
 
   if (parallel) {
     # Checks each row of M if the weight is allowed
-    res_vec <- mclapply(1:2 ^ n, function(x, M, w, v, W) {
+    res_vec <- mclapply(1:2^n, function(x, M, w, v, W) {
       m <- M[x, ]
       if (sum(w[m == 1]) <= W) {
         return(m)
@@ -65,7 +66,6 @@ brute_force_knapsack <- function(x, W, parallel = FALSE) {
   res <- list(value = sum(v[best == 1]), elements = which(best == 1))
   return(res)
 }
-lineprof(greedy_knapsack(x = knapsack_objects[1:1200, ], W = 2000))
 
 #' An implementation of a dynamic solution to the knapsack problem
 #'
@@ -115,7 +115,7 @@ knapsack_dynamic <- function(x, W) {
   return(list(value = m[n, W], elements = rev(ele)))
 }
 
-lineprof(knapsack_dynamic(x = knapsack_objects[1:12,], W=3500))
+
 
 #' An implementation of a greedy solution to the knapsack problem
 #'
@@ -151,5 +151,3 @@ greedy_knapsack <- function(x, W) {
   res <- list(value = sum(v[best > 0]), elements = which(best > 0))
   return(res)
 }
-
-
