@@ -1,10 +1,11 @@
 ---
-title: "lab_report_knapsack"
+title: "Lab Report Knapsack"
+name: "lab_report_knapsack"
 author: "Simon Jönsson, Fanny Karelius"
 date: "`r Sys.Date()`"
 output: rmarkdown::pdf_document
 vignette: >
-  %\VignetteIndexEntry{lab_report_knapsack}
+  %\VignetteIndexEntry{Lab Report Knapsack}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
@@ -76,7 +77,7 @@ Here we identify that the segment in the code that takes most time to run is the
 
 ### Greedy knapsack solution
 ```{r profile greedy}
-lineprof(greedy_knapsack(x = knapsack_objects[1:2000,], W = 3500))
+lineprof(greedy_knapsack(x = knapsack_objects[1:20000,], W = 3500))
 ```
 
 Not alot to improve on here.
