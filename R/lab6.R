@@ -45,7 +45,7 @@ brute_force_knapsack <- function(x, W, parallel = FALSE) {
       if (sum(w[m == 1]) <= W) {
         return(m)
       }
-    }, M, w, v, W, mc.cores = 4)
+    }, M, w, v, W, mc.cores = detectCores())
 
     # Takes all the allowed rows and calculates which one has the best value
     lapply(Filter(Negate(is.null), res_vec), function(m) {
