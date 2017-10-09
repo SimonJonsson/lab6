@@ -31,7 +31,7 @@ In this lab we implement different solutions for the **0/1-knapsack**- and **unb
 
 **Parallel**
 ```{r brute par}
-system.time(brute_force_knapsack(x = knapsack_objects[1:16,], W = 3500, parallel=TRUE))
+system.time(brute_force_knapsack(x = knapsack_objects[1:16,], W = 3500, parallel=FALSE))
 ```
 **Non-parallel**
 ```{r brute non-par}
