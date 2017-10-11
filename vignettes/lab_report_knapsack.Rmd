@@ -10,10 +10,7 @@ vignette: >
   \usepackage[utf8]{inputenc}
 ---
 ```{r setup, include=FALSE}
-library(lab6)
-library(parallel)
 devtools::install_github("hadley/lineprof")
-library(lineprof)
 set.seed(42)
 m <- 2000
 knapsack_objects <-
@@ -31,11 +28,11 @@ In this lab we implement different solutions for the **0/1-knapsack**- and **unb
 
 **Parallel**
 ```{r brute par}
-system.time(brute_force_knapsack(x = knapsack_objects[1:16,], W = 3500, parallel=FALSE))
+system.time(brute_force_knapsack(x = knapsack_objects[1:20,], W = 3500, parallel=FALSE))
 ```
 **Non-parallel**
 ```{r brute non-par}
-system.time(brute_force_knapsack(x = knapsack_objects[1:16,], W = 3500, parallel=FALSE))
+system.time(brute_force_knapsack(x = knapsack_objects[1:20,], W = 3500, parallel=FALSE))
 ```
 
 ### Dynamic knapsack solution
@@ -68,7 +65,7 @@ Here we see that apart from allocation, all segments of the code are in similar 
 lineprof(brute_force_knapsack(x = knapsack_objects[1:12,], W = 3500, parallel=FALSE))
 ```
 
-Similar to the parallel solution this code has very little overhead that could be optimized.
+Here we see that the apply function and the unlist function creates alot of allocation. Creating a solution which does not use unlist but instead without pre-allocation might help. Also the apply function might be exchanged with using a **max()** primitive. Generating the matrix with given parameters: weight and val one could use **max** to find the maximum val given that the weight $\leq$ W.
 
 ### Dynamic knapsack solution
 ```{r profile dynamic}
