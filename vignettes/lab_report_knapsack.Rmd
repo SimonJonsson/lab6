@@ -12,6 +12,7 @@ vignette: >
 ```{r setup, include=FALSE}
 library(lab6)
 devtools::install_github("hadley/lineprof")
+library(lineprof)
 set.seed(42)
 m <- 2000
 knapsack_objects <-
