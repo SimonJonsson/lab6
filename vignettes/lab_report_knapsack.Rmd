@@ -10,6 +10,7 @@ vignette: >
   \usepackage[utf8]{inputenc}
 ---
 ```{r setup, include=FALSE}
+library(lab6)
 devtools::install_github("hadley/lineprof")
 set.seed(42)
 m <- 2000
@@ -58,14 +59,14 @@ library(lineprof)
 lineprof(brute_force_knapsack(x = knapsack_objects[1:12,], W = 3500, parallel=TRUE))
 ```
 
-Here we see that apart from allocation, all segments of the code are in similar timesteps - quite tricky to identify bottlenecks. However one could look over using some primitive functions instead of using lapply to find the row with near-optimal value. A suggestions might be using **max()**.
+All segments of the code are in similar timesteps - quite tricky to identify bottlenecks. However one could look over using some primitive functions instead of using lapply to find the row with near-optimal value. A suggestions might be using **max()**.
 
 **Non-parallel**
 ```{r profile brute non-par}
 lineprof(brute_force_knapsack(x = knapsack_objects[1:12,], W = 3500, parallel=FALSE))
 ```
 
-Here we see that the apply function and the unlist function creates alot of allocation. Creating a solution which does not use unlist but instead without pre-allocation might help. Also the apply function might be exchanged with using a **max()** primitive. Generating the matrix with given parameters: weight and val one could use **max** to find the maximum val given that the weight $\leq$ W.
+The lapply function might be exchanged with using a **max()** primitive. Generating the matrix with given parameters: weight and val one could use **max** to find the maximum val given that the weight $\leq$ W.
 
 ### Dynamic knapsack solution
 ```{r profile dynamic}

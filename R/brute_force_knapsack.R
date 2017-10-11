@@ -15,21 +15,18 @@ brute_force_knapsack <- function(x, W, parallel = FALSE) {
               is.vector(x$w) &
               length(x$w) == length(x$v))
   n <- length(x[[1]])
-  l <- rep(list(0:1), n)
-  # generates all permutations(2^n) of the n length 0,1 vector
-  M <- matrix(unlist(expand.grid(l)), ncol = n)
   v <- x$v
   w <- x$w
   best <- replicate(n, 0)
 
   if (parallel) {
     # Checks each row of M if the weight is allowed
-    res_vec <- parallel::mclapply(1:2^n, function(x, M, w, v, W) {
-      m <- M[x, ]
+    res_vec <- parallel::mclapply(1:(2^n-1), function(x, w, v, W) {
+      m <- intToBits(x)
       if (sum(w[m == 1]) <= W) {
         return(m)
       }
-    }, M, w, v, W, mc.cores = parallel::detectCores())
+    }, w, v, W, mc.cores = parallel::detectCores())
 
     # Takes all the allowed rows and calculates which one has the best value
     lapply(Filter(Negate(is.null), res_vec), function(m) {
@@ -39,14 +36,15 @@ brute_force_knapsack <- function(x, W, parallel = FALSE) {
     })
   } else {
     # Goes through each row of M to find the optimal value
-    apply(M, 1, function(m) {
+    lapply(1:(2^n-1), function(x) {
+      m <- intToBits(x)
       if (sum(v[m == 1]) > sum(v[best == 1]) & sum(w[m == 1]) <= W) {
         best <<- m
       }
-
     })
   }
 
   res <- list(value = sum(v[best == 1]), elements = which(best == 1))
   return(res)
 }
+#system.time(brute_force_knapsack(x = knapsack_objects[1:20,], W = 3500, parallel=TRUE))

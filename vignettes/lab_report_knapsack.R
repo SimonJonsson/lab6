@@ -1,4 +1,5 @@
 ## ----setup, include=FALSE------------------------------------------------
+library(lab6)
 devtools::install_github("hadley/lineprof")
 set.seed(42)
 m <- 2000
@@ -7,7 +8,7 @@ knapsack_objects <-
              v = runif(n = m, 0, 10000))
 
 ## ----brute par-----------------------------------------------------------
-system.time(brute_force_knapsack(x = knapsack_objects[1:20,], W = 3500, parallel=FALSE))
+system.time(brute_force_knapsack(x = knapsack_objects[1:20,], W = 3500, parallel=TRUE))
 
 ## ----brute non-par-------------------------------------------------------
 system.time(brute_force_knapsack(x = knapsack_objects[1:20,], W = 3500, parallel=FALSE))
